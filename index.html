@@ -20,6 +20,56 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
 .overlay{position:fixed;inset:0;background:#0009;z-index:30;display:none;justify-content:flex-end}.overlay.show{display:flex}.drawer{width:min(430px,100%);height:100%;background:#10101a;border-left:1px solid var(--line);padding:24px;overflow:auto}.drawerhead{display:flex;justify-content:space-between;align-items:center}.close{background:none;border:0;color:white;font-size:25px;cursor:pointer}.cartitem{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding:15px 0}.muted{color:var(--muted)}.total{display:flex;justify-content:space-between;font-size:19px;font-weight:800;margin:22px 0}.notice{font-size:12px;line-height:1.5;color:var(--muted);background:#1a1725;border:1px solid var(--line);padding:12px;border-radius:12px}.checkout{width:100%}.modal{position:fixed;inset:0;background:#000b;z-index:40;display:none;place-items:center;padding:18px}.modal.show{display:grid}.modalbox{width:min(480px,100%);background:#151421;border:1px solid #594080;border-radius:20px;padding:24px}.modalbox h2{margin-top:0}.modalbox p{color:var(--muted);line-height:1.6}.modalbox input{width:100%;padding:12px;margin:7px 0 14px;border-radius:10px;border:1px solid var(--line);background:#0d0d15;color:white}.modalbox .primary{width:100%}
 @media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:55px}.hero-art{min-height:270px}.products{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}}
 @media(max-width:520px){.products{grid-template-columns:1fr}.trust{grid-template-columns:1fr}.sectionhead{align-items:start;flex-direction:column}.hero h1{font-size:45px}.banner{align-items:start;flex-direction:column}.nav{height:66px}}
+
+/* NAMAN STUDIOS PREMIUM FLIPBOOK */
+.preview-section {
+  margin: 40px auto;
+  padding: 28px 16px;
+  background: linear-gradient(145deg,#171126,#0d0b15);
+  border: 1px solid #49316f;
+  border-radius: 22px;
+  text-align: center;
+}
+.preview-section h2 {
+  color: #d8b4fe;
+}
+#book-area {
+  width: 100%;
+  max-width: 480px;
+  margin: 25px auto;
+  min-height: 420px;
+}
+#flipbook {
+  margin: auto;
+}
+.flip-page {
+  background: white;
+  overflow: hidden;
+}
+.flip-page canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.flip-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px;
+}
+.flip-controls button {
+  background: #482477;
+  color: white;
+  border: 1px solid #9b65d4;
+  padding: 12px 20px;
+  border-radius: 10px;
+}
+#flip-status {
+  color: #c4a1ff;
+  font-size: 13px;
+}
+
 </style>
 </head>
 <body>
@@ -34,7 +84,26 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
  <div class="searchrow"><input class="search" id="search" placeholder="Search products..." oninput="renderProducts()"><div class="filters" id="filters"></div></div>
  <div class="products" id="productsGrid"></div><div class="empty" id="empty">No products found. Try another search or category.</div>
 </section>
-<section id="about"><div class="banner"><div><h2>Built for creators, learners & doers.</h2><p>Naman Studios brings digital resources together in one clean, easy-to-use store.</p></div><a class="primary" href="#products">Browse collection →</a></div></section>
+
+<section class="preview-section" id="preview">
+  <div class="eyebrow">EXCLUSIVE PREVIEW</div>
+  <h2>Explore Your AI Prompt Book</h2>
+  <p class="muted">Flip through sample pages before buying.</p>
+
+  <div id="book-area">
+    <div id="flipbook"></div>
+  </div>
+
+  <div class="flip-controls">
+    <button onclick="bookFlip.flipPrev()">← Previous</button>
+    <button onclick="bookFlip.flipNext()">Next →</button>
+  </div>
+
+  <p id="flip-status">Loading preview...</p>
+  <p class="muted">5 sample pages · Full book: ₹49</p>
+</section>
+ 
+ <section id="about"><div class="banner"><div><h2>Built for creators, learners & doers.</h2><p>Naman Studios brings digital resources together in one clean, easy-to-use store.</p></div><a class="primary" href="#products">Browse collection →</a></div></section>
 </main>
 <footer><div class="wrap foot"><div><b style="color:white">NAMAN STUDIOS</b><br>Digital products for your next idea.</div><div>© <span id="year"></span> Naman Studios. All rights reserved.<br>Contact: support@namanstudios.example</div></div></footer>
 <div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()"><aside class="drawer"><div class="drawerhead"><h2>Your cart</h2><button class="close" onclick="closeCart()">×</button></div><div id="cartItems"></div><div class="total"><span>Total</span><span id="cartTotal">₹0</span></div><button class="primary checkout" onclick="checkout()">Continue to checkout</button><p class="notice">Demo checkout only. No payment will be collected and no files will be delivered in this preview.</p></aside></div>
@@ -64,4 +133,79 @@ function closeCheckout(){document.getElementById("checkoutModal").classList.remo
 function demoOrder(){let email=document.getElementById("buyerEmail").value;if(!email||!email.includes("@")){alert("Please enter a valid email address.");return}alert("Demo only: no payment was taken and no order was created.");closeCheckout()}
 document.getElementById("year").textContent=new Date().getFullYear();renderProducts();updateCart();
 </script>
+
+<!-- PDF.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- Page Flip library -->
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+
+<script>
+(async function () {
+  const status = document.getElementById("flip-status");
+  const container = document.getElementById("flipbook");
+
+  const pdfURL = "https://harshbhadauriya1237-byte.github.io/namanstudios/Naman-Studios-Preview-Sample.pdf";
+
+  try {
+    status.textContent = "Loading your AI Prompt Book...";
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    const pdf = await pdfjsLib.getDocument(pdfURL).promise;
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 1.2 });
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "page flip-page";
+
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      wrapper.appendChild(canvas);
+      container.appendChild(wrapper);
+
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
+    }
+
+    window.bookFlip = new St.PageFlip(container, {
+      width: 400,
+      height: 566,
+      size: "stretch",
+      minWidth: 280,
+      maxWidth: 480,
+      minHeight: 396,
+      maxHeight: 680,
+      showCover: true,
+      mobileScrollSupport: false,
+      maxShadowOpacity: 0.5
+    });
+
+    window.bookFlip.loadFromHTML(
+      container.querySelectorAll(".page")
+    );
+
+    status.textContent = "Your preview is ready!";
+
+    window.bookFlip.on("flip", function (event) {
+      status.textContent =
+        "Page " + (event.data + 1) + " of " + pdf.numPages;
+    });
+
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Preview could not load. Please refresh.";
+  }
+})();
+     </script>
+ 
 </body></html>
