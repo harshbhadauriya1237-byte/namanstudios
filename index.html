@@ -107,8 +107,69 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
 </main>
 <footer><div class="wrap foot"><div><b style="color:white">NAMAN STUDIOS</b><br>Digital products for your next idea.</div><div>© <span id="year"></span> Naman Studios. All rights reserved.<br>Contact: support@namanstudios.example</div></div></footer>
 <div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()"><aside class="drawer"><div class="drawerhead"><h2>Your cart</h2><button class="close" onclick="closeCart()">×</button></div><div id="cartItems"></div><div class="total"><span>Total</span><span id="cartTotal">₹0</span></div><button class="primary checkout" onclick="checkout()">Continue to checkout</button><p class="notice">Demo checkout only. No payment will be collected and no files will be delivered in this preview.</p></aside></div>
-<div class="modal" id="checkoutModal"><div class="modalbox"><div class="drawerhead"><h2>Checkout preview</h2><button class="close" onclick="closeCheckout()">×</button></div><p>This storefront is a front-end demo. To accept real UPI/cards and deliver downloads securely, connect a payment provider and server-side order verification.</p><label for="buyerEmail">Email address</label><input id="buyerEmail" type="email" placeholder="you@example.com"><button class="primary" onclick="demoOrder()">Place demo order</button><p class="notice">This button only demonstrates the flow. It does not charge money or create a real order.</p></div></div>
-<script>
+
+<div class="modal" id="checkoutModal">
+  <div class="modalbox">
+    <div class="drawerhead">
+      <h2>Naman Studios Checkout</h2>
+      <button onclick="closeCheckout()">✕</button>
+    </div>
+
+    <div style="padding:20px;text-align:center">
+      <h2>Ultimate AI Prompt Book</h2>
+      <h1 style="color:#c084fc">₹49</h1>
+      <p>100 Original AI Prompts</p>
+      <p>English + Hinglish Edition</p>
+
+      <img src="naman-studios-upi-qr-49.png"
+        alt="UPI QR Code"
+        style="width:230px;max-width:100%;background:white;padding:8px;border-radius:14px">
+
+      <p><b>UPI ID</b></p>
+      <p>harshbhadauriya@fam</p>
+
+      <button onclick="navigator.clipboard.writeText('harshbhadauriya@fam').then(()=>alert('UPI ID Copied!'))">
+        Copy UPI ID
+      </button>
+
+      <br><br>
+
+      <a href="upi://pay?pa=harshbhadauriya%40fam&pn=Naman%20Studios&am=49&cu=INR"
+        style="display:block;background:#702bc0;color:white;padding:14px;border-radius:12px;text-decoration:none">
+        Pay ₹49 Using UPI
+      </a>
+
+      <hr style="margin:22px 0">
+
+      <h3>Submit Payment Proof</h3>
+
+      <input id="buyerName" placeholder="Full Name"
+        style="width:100%;padding:12px;margin:7px 0">
+
+      <input id="buyerEmail" type="email" placeholder="Your Email"
+        style="width:100%;padding:12px;margin:7px 0">
+
+      <input id="paymentUTR" placeholder="UTR / Transaction ID"
+        style="width:100%;padding:12px;margin:7px 0">
+
+      <button onclick="sendPaymentProof('email')"
+        style="width:100%;padding:14px;background:#702bc0;color:white;margin-top:12px;border-radius:10px">
+        ✉️ Send via Email
+      </button>
+
+      <button onclick="sendPaymentProof('telegram')"
+        style="width:100%;padding:14px;background:#168acb;color:white;margin-top:10px;border-radius:10px">
+        ➤ Send via Telegram
+      </button>
+
+      <p style="font-size:12px;color:#aaa;margin-top:15px">
+        Payment is subject to manual verification.
+      </p>
+    </div>
+  </div>
+</div>
+  
+  <script>
 const products=[
 {id:1,name:"Creator Starter Bundle",category:"Templates",price:299,icon:"🎨",desc:"A starter pack of editable content planning and creator templates."},
 {id:2,name:"Naman Studios – 100 original AI prompts in English and Hinglish for content creation, business, marketing, productivity and more.",category:"AI & Tools",price:49,icon:"🤖",desc:"Premium AI prompts for content creation, business, marketing and productivity."},
@@ -206,6 +267,48 @@ document.getElementById("year").textContent=new Date().getFullYear();renderProdu
     status.textContent = "Preview could not load. Please refresh.";
   }
 })();
-     </script>
+
+function sendPaymentProof(method) {
+  const name = document.getElementById("buyerName").value.trim();
+  const email = document.getElementById("buyerEmail").value.trim();
+  const utr = document.getElementById("paymentUTR").value.trim();
+
+  if (!name || !email || !email.includes("@") || !utr) {
+    alert("Please enter your name, valid email and UTR.");
+    return;
+  }
+
+  const message =
+    "Naman Studios - Payment Proof\n\n" +
+    "Product: Ultimate AI Prompt Book\n" +
+    "Amount: Rs 49\n" +
+    "Name: " + name + "\n" +
+    "Email: " + email + "\n" +
+    "UTR: " + utr;
+
+  if (method === "email") {
+    const subject = encodeURIComponent("Naman Studios - Payment Proof");
+    const body = encodeURIComponent(message);
+
+    window.location.href =
+      "mailto:studionaman229@gmail.com?subject=" +
+      subject + "&body=" + body;
+  }
+
+  if (method === "telegram") {
+    const telegramWindow =
+      window.open("https://t.me/NamanStudioSupport", "_blank");
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(message)
+        .then(() => alert("Payment details copied. Paste them in Telegram chat."))
+        .catch(() => alert("Please share your name, email and UTR manually in Telegram."));
+    } else {
+      alert("Please share your name, email and UTR manually in Telegram.");
+    }
+  }
+    }
+      
+</script>
  
 </body></html>
