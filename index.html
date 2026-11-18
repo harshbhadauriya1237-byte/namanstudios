@@ -221,7 +221,29 @@ function checkout(){if(!cart.length){alert("Your cart is empty.");return}closeCa
 function closeCheckout(){document.getElementById("checkoutModal").classList.remove("show")}
 function demoOrder(){let email=document.getElementById("buyerEmail").value;if(!email||!email.includes("@")){alert("Please enter a valid email address.");return}alert("Demo only: no payment was taken and no order was created.");closeCheckout()}
 document.getElementById("year").textContent=new Date().getFullYear();renderProducts();updateCart();
-</script>
+const checkoutModalObserver = new MutationObserver(() => {
+  const modal = document.getElementById("checkoutModal");
+
+  if (modal && modal.classList.contains("show")) {
+    const orderID = window.checkoutOrderID ||
+      (window.checkoutOrderID = "NS-" + Date.now());
+
+    const display = document.getElementById("orderIdDisplay");
+    if (display) {
+      display.textContent = "Your Order ID: " + orderID;
+    }
+  }
+});
+
+const checkoutModalElement = document.getElementById("checkoutModal");
+
+if (checkoutModalElement) {
+  checkoutModalObserver.observe(checkoutModalElement, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
+}
+  </script>
 
 <!-- PDF.js library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
