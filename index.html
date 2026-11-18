@@ -158,7 +158,9 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
       <hr style="margin:22px 0">
 
       <h3>Submit Payment Proof</h3>
-
+<p id="orderIdDisplay" style="color:#c084fc;font-weight:bold;font-size:15px">
+Order ID will appear when payment proof is submitted.
+</p>
       <input id="buyerName" placeholder="Full Name"
         style="width:100%;padding:12px;margin:7px 0">
 
@@ -305,7 +307,11 @@ function sendPaymentProof(method) {
   }
 const orderID = window.checkoutOrderID ||
   (window.checkoutOrderID = "NS-" + Date.now());
- const message =
+const orderDisplay = document.getElementById("orderIdDisplay");
+if (orderDisplay) {
+  orderDisplay.textContent = "Your Order ID: " + orderID;
+}
+  const message =
   "Naman Studios - Payment Proof\n" +
   "Order ID: " + orderID + "\n" +
   "Product: Ultimate AI Prompt Book\n" +
