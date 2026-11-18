@@ -69,7 +69,23 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
   color: #c4a1ff;
   font-size: 13px;
 }
+/* Checkout modal mobile scrolling fix */
+#checkoutModal.show {
+  display: block !important;
+  overflow-y: auto !important;
+  padding: 10px !important;
+}
 
+#checkoutModal .modalbox {
+  width: min(480px, 100%);
+  max-height: calc(100vh - 20px);
+  max-height: calc(100dvh - 20px);
+  margin: 0 auto;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
 </style>
 </head>
 <body>
