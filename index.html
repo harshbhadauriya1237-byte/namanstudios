@@ -303,14 +303,17 @@ function sendPaymentProof(method) {
     alert("Please enter your name, valid email and UTR.");
     return;
   }
-
-  const message =
-    "Naman Studios - Payment Proof\n\n" +
-    "Product: Ultimate AI Prompt Book\n" +
-    "Amount: Rs 49\n" +
-    "Name: " + name + "\n" +
-    "Email: " + email + "\n" +
-    "UTR: " + utr;
+const orderID = window.checkoutOrderID ||
+  (window.checkoutOrderID = "NS-" + Date.now());
+ const message =
+  "Naman Studios - Payment Proof\n" +
+  "Order ID: " + orderID + "\n" +
+  "Product: Ultimate AI Prompt Book\n" +
+  "Amount: Rs 49\n" +
+  "Name: " + name + "\n" +
+"Email: " + email + "\n" +
+"UTR: " + utr;
+    
 
   if (method === "email") {
     const subject = encodeURIComponent("Naman Studios - Payment Proof");
