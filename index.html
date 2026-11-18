@@ -86,6 +86,152 @@ footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-s
   overscroll-behavior: contain;
   touch-action: pan-y;
 }
+/* ===== NAMAN STUDIOS PREMIUM REDESIGN ===== */
+
+:root {
+  --purple: #a855f7;
+  --pink: #d8b4fe;
+  --line: #3b2459;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 80% 5%, #35115d 0%, transparent 34%),
+    radial-gradient(ellipse at 15% 35%, #170d2d 0%, transparent 30%),
+    #050507;
+}
+
+header {
+  border-bottom: 1px solid #54277e;
+  box-shadow: 0 5px 25px #8b5cf622;
+}
+
+.brand {
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+.navlinks {
+  color: white;
+  font-weight: 700;
+}
+
+.navlinks a:hover {
+  color: #d8b4fe;
+}
+
+.hero {
+  padding-top: 65px;
+  padding-bottom: 50px;
+}
+
+.hero h1 {
+  font-weight: 950;
+  letter-spacing: -2px;
+}
+
+.hero-art {
+  background:
+    radial-gradient(circle at 50% 45%, #7525c8 0%, #25103c 38%, #08070d 78%);
+  border: 1px solid #8b5cf6;
+  box-shadow: 0 0 40px #8b5cf633;
+  min-height: 380px;
+}
+
+.orb {
+  border: 2px solid #c084fc;
+  box-shadow: 0 0 35px #a855f7, 0 0 100px #7c3aed88;
+}
+
+.float {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 18px #8b5cf633;
+}
+
+.trust div {
+  background: linear-gradient(145deg, #171020, #0c0b12);
+  border-color: #432462;
+  transition: .2s;
+}
+
+.trust div:hover {
+  border-color: #a855f7;
+  transform: translateY(-3px);
+}
+
+.sectionhead h2 {
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.product {
+  background: linear-gradient(145deg, #1b1227, #0b0a10);
+  border: 1px solid #482668;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px #0005;
+}
+
+.product:hover {
+  transform: translateY(-6px);
+  border-color: #b56aff;
+  box-shadow: 0 0 25px #8b5cf633;
+}
+
+.thumb {
+  height: 200px;
+  background: radial-gradient(circle, #54247e, #15101f 75%);
+}
+
+.pbody h3 {
+  font-weight: 850;
+}
+
+.smallbtn {
+  background: linear-gradient(100deg, #7c3aed, #a855f7);
+  border: 0;
+  box-shadow: 0 4px 15px #7c3aed44;
+}
+
+.price {
+  color: #d8b4fe;
+}
+
+.banner {
+  background: linear-gradient(110deg, #361458, #130c20, #24103c);
+  border-color: #914ce0;
+  box-shadow: 0 0 25px #8b5cf622;
+}
+
+footer {
+  background: #08070c;
+  border-top: 1px solid #55267c;
+}
+
+.primary {
+  background: linear-gradient(100deg, #7c3aed, #c026d3);
+  box-shadow: 0 0 25px #8b5cf644;
+}
+
+.primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+@media(max-width:520px) {
+  .hero-art {
+    min-height: 280px;
+  }
+
+  .thumb {
+    height: 180px;
+  }
+
+  .brand {
+    font-size: 19px;
+  }
+}
+
+/* ===== END PREMIUM REDESIGN ===== */
 </style>
 </head>
 <body>
