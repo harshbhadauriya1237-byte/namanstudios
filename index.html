@@ -363,6 +363,64 @@ footer {
   }
 }
   
+/* PREMIUM MOBILE HERO DESIGN */
+@media (max-width: 800px) {
+  .hero {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    text-align: center;
+    padding: 35px 20px;
+  }
+
+  .hero-content {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(32px, 8vw, 44px);
+    line-height: 1.12;
+  }
+
+  .hero-content p {
+    max-width: 520px;
+    margin: 18px auto;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .hero-content .actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-note {
+    font-size: 9px;
+    line-height: 1.6;
+  }
+
+  .hero-art {
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .hero-art .float {
+    display: none;
+  }
+
+  .lion-glow {
+    width: 100%;
+    max-width: 320px;
+    height: 300px;
+  }
+}
+  
 </style>
 </head>
 <body>
