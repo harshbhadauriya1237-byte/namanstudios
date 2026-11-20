@@ -544,6 +544,28 @@ footer {
     width: 100%;
   }
 }
+ 
+/* FEATURED AI PROMPT BOOK */
+.featured-product {
+  border: 2px solid #d6a84b !important;
+  box-shadow: 0 0 28px #a855f744;
+}
+
+.featured-product .thumb {
+  background: radial-gradient(circle, #56351b, #160d20 78%);
+}
+
+.featured-label {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f5d78e, #b7791f);
+  color: #241306;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
   
 </style>
 </head>
@@ -694,7 +716,9 @@ let active="All",cart=[];
 const cats=["All",...new Set(products.map(p=>p.category))];
 document.getElementById("filters").innerHTML=cats.map(c=>`<button class="filter ${c==="All"?"active":""}" onclick="setCategory('${c}')">${c}</button>`).join("");
 function setCategory(c){active=c;document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active",b.textContent===c));renderProducts()}
-function renderProducts(){let q=document.getElementById("search").value.toLowerCase();let list=products.filter(p=>(active==="All"||p.category===active)&&(p.name+" "+p.category+" "+p.desc).toLowerCase().includes(q));document.getElementById("productsGrid").innerHTML=list.map(p=>`<article class="product"><div class="thumb">${p.icon}</div><div class="pbody"><div class="tag">${p.category}</div><h3>${p.name}</h3><p>${p.desc}</p><div class="pricebar"><span class="price">₹${p.price}</span><button class="smallbtn" onclick="addToCart(${p.id})">Add to cart</button></div></div></article>`).join("");document.getElementById("empty").style.display=list.length?"none":"block"}
+function renderProducts(){let q=document.getElementById("search").value.toLowerCase();let list=products.filter(p=>(active==="All"||p.category===active)&&(p.name+" "+p.category+" "+p.desc).toLowerCase().includes(q));document.getElementById("productsGrid").innerHTML=list.map(p=>`
+<article class="product ${p.id===3 ? "featured-product" : ""}"><div class="thumb">${p.icon}</div><div class="pbody">${p.id===3 ? '<div class="featured-label">✦ FEATURED • BEST VALUE</div>' : ''}
+<div class="tag">${p.category}</div><h3>${p.name}</h3><p>${p.desc}</p><div class="pricebar"><span class="price">₹${p.price}</span><button class="smallbtn" onclick="addToCart(${p.id})">Add to cart</button></div></div></article>`).join("");document.getElementById("empty").style.display=list.length?"none":"block"}
 function addToCart(id){let p=products.find(x=>x.id===id);let found=cart.find(x=>x.id===id);if(found)found.qty++;else cart.push({...p,qty:1});updateCart()}
 function updateCart(){document.getElementById("cartCount").textContent=cart.reduce((s,p)=>s+p.qty,0);document.getElementById("cartItems").innerHTML=cart.length?cart.map(p=>`<div class="cartitem"><div><b>${p.name}</b><div class="muted">₹${p.price} × ${p.qty}</div></div><div><b>₹${p.price*p.qty}</b><br><button class="smallbtn" onclick="removeItem(${p.id})">Remove</button></div></div>`).join(""):'<p class="muted">Your cart is empty.</p>';document.getElementById("cartTotal").textContent="₹"+cart.reduce((s,p)=>s+p.price*p.qty,0)}
 function removeItem(id){cart=cart.filter(p=>p.id!==id);updateCart()}
