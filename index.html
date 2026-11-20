@@ -687,40 +687,38 @@ Order ID will appear when payment proof is submitted.
       <p style="font-size:12px;color:#aaa;margin-top:15px">
         Payment is subject to manual verification.
       </p>
-  <div style="margin-top:18px;padding:16px;background:#1c1428;border:1px solid #702bc0;border-radius:12px;text-align:center">
-  <h3 style="color:#c084fc;margin:0 0 10px">
-    Payment Verification Pending
-  </h3>
-  <p style="color:#eee;font-size:14px;margin:0">
-    Thank you for your order! Once you send your payment proof,
-    we will manually verify your payment. Your Ultimate AI Prompt
-    Book PDF will be delivered via Email or Telegram after verification.
-  </p>
-  </div>
-    </div>
-  </div>
-</div>
-  
-  <script>
-const products=[
-{id:1,name:"Creator Starter Bundle",category:"Templates",price:299,icon:"🎨",desc:"A starter pack of editable content planning and creator templates."},
-{id:2,name:"Naman Studios – 100 original AI prompts in English and Hinglish for content creation, business, marketing, productivity and more.",category:"AI & Tools",price:49,icon:"🤖",desc:"Premium AI prompts for content creation, business, marketing and productivity."},
-
-{id:3,name:"Naman Studios – Ultimate AI Prompt Book",category:"AI & Tools",price:49,icon:"🤖",desc:"100 original AI prompts in English + Hinglish for content creation, business, marketing and productivity."},
- 
-{id:4,name:"Social Media Design Pack",category:"Templates",price:349,icon:"🖼️",desc:"Reusable design layouts for posts, stories and promotions."},
-{id:5,name:"Productivity Planner PDF",category:"Planners",price:149,icon:"📅",desc:"A simple printable planner for tasks, goals and weekly reviews."},
-{id:6,name:"Video Editing Assets",category:"Creative Assets",price:399,icon:"🎬",desc:"A sample collection concept for transitions, titles and creator assets."}
-];
-let active="All",cart=[];
-const cats=["All",...new Set(products.map(p=>p.category))];
-document.getElementById("filters").innerHTML=cats.map(c=>`<button class="filter ${c==="All"?"active":""}" onclick="setCategory('${c}')">${c}</button>`).join("");
-function setCategory(c){active=c;document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active",b.textContent===c));renderProducts()}
-function renderProducts(){let q=document.getElementById("search").value.toLowerCase();let list=products.filter(p=>(active==="All"||p.category===active)&&(p.name+" "+p.category+" "+p.desc).toLowerCase().includes(q)).sort((a,b)=>(b.id===3)-(a.id===3)); document.getElementById("productsGrid").innerHTML=list.map(p=>`
-<article class="product ${p.id===3 ? "featured-product" : ""}"><div class="thumb">${p.icon}</div><div class="pbody">${p.id===3 ? '<div class="featured-label">✦ FEATURED • BEST VALUE</div>' : ''
-<div class="tag">${p.category}</div><h3>${p.name}</h3><p>${p.desc}</p><div class="pricebar"><span class="price">₹${p.price}</span><button class="smallbtn" onclick="addToCart(${p.id})">Add to cart</button></div></div></article>`).join("");document.getElementById("empty").style.display=list.length?"none":"block"}
 function addToCart(id){let p=products.find(x=>x.id===id);let found=cart.find(x=>x.id===id);if(found)found.qty++;else cart.push({...p,qty:1});updateCart()}
 function updateCart(){document.getElementById("cartCount").textContent=cart.reduce((s,p)=>s+p.qty,0);document.getElementById("cartItems").innerHTML=cart.length?cart.map(p=>`<div class="cartitem"><div><b>${p.name}</b><div class="muted">₹${p.price} × ${p.qty}</div></div><div><b>₹${p.price*p.qty}</b><br><button class="smallbtn" onclick="removeItem(${p.id})">Remove</button></div></div>`).join(""):'<p class="muted">Your cart is empty.</p>';document.getElementById("cartTotal").textContent="₹"+cart.reduce((s,p)=>s+p.price*p.qty,0)}
+
+function renderProducts() {
+  let q = document.getElementById("search").value.toLowerCase();
+
+  let list = products
+    .filter(p =>
+      (active === "All" || p.category === active) &&
+      (p.name + " " + p.category + " " + p.desc).toLowerCase().includes(q)
+    )
+    .sort((a, b) => (b.id === 3) - (a.id === 3));
+
+  document.getElementById("productsGrid").innerHTML = list.map(p => `
+    <article class="product ${p.id === 3 ? "featured-product" : ""}">
+      <div class="thumb">${p.icon}</div>
+      <div class="pbody">
+        ${p.id === 3 ? '<div class="featured-label">✦ FEATURED • BEST VALUE</div>' : ''}
+        <div class="tag">${p.category}</div>
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="pricebar">
+          <span class="price">₹${p.price}</span>
+          <button class="smallbtn" onclick="addToCart(${p.id})">Add to cart</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+
+  document.getElementById("empty").style.display = list.length ? "none" : "block";
+}
+      
 function removeItem(id){cart=cart.filter(p=>p.id!==id);updateCart()}
 function openCart(){document.getElementById("cartOverlay").classList.add("show")}function closeCart(){document.getElementById("cartOverlay").classList.remove("show")}
 function checkout(){if(!cart.length){alert("Your cart is empty.");return}closeCart();document.getElementById("checkoutModal").classList.add("show")}
